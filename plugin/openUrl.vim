@@ -43,7 +43,7 @@ function! OpenUrlUnderCursor()
     "let url = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
     execute "normal BvEy"
     let url = matchstr(@0, '[a-z]*:\/\/[^ >,;)"]*')
-    if url
+    if strlen(url)
         call s:OpenUrl(url)
     else
         echomsg 'Url is not found!'
