@@ -3,8 +3,8 @@
 "
 " avalable for win32, mac, unix/linux
 "
-" 1. Open the url under the cursor: <leader>ou
-" 2. Open the github bundle under the cursor: <leader>ob
+" 1. Open the url under the cursor: <leader>u
+" 2. Open the github bundle under the cursor: <leader>b
 "
 "
 
@@ -42,7 +42,8 @@ function! OpenUrlUnderCursor()
     "One line may have more than one url
     "let url = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
     execute "normal BvEy"
-    let url = matchstr(@0, '[a-z]*:\/\/[^ >,;)"]*')
+    " \u0027 = '
+    let url = matchstr(@0, '[a-z]*:\/\/[^ >,;)"\u0027]*')
     if strlen(url)
         call s:OpenUrl(url)
     else
@@ -60,8 +61,8 @@ function! OpenBundleUnderCursor()
 endfunction
 
 
-noremap <leader>ou :call OpenUrlUnderCursor()<CR>
-noremap <leader>ob :call OpenBundleUnderCursor()<CR>
+noremap <leader>u :call OpenUrlUnderCursor()<CR>
+noremap <leader>b :call OpenBundleUnderCursor()<CR>
 
 
 let &cpo = s:save_cpo
