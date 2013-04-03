@@ -22,7 +22,7 @@ function! s:OpenUrl(url)
         " open url from shell command line
         " @see http://www.dwheeler.com/essays/open-files-urls.html
         "
-        if has('win32')
+        if has('win32') || has('win64') || has('win95') || has('win16')
             silent exec "!cmd /c start " . a:url
             echomsg 'open url "' . a:url . '" ...'
         elseif has('mac')
