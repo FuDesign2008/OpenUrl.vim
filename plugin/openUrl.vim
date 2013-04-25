@@ -65,8 +65,10 @@ function! OpenBundleUnderCursor()
 endfunction
 
 
-noremap <leader>u :call OpenUrlUnderCursor()<CR>
-noremap <leader>b :call OpenBundleUnderCursor()<CR>
+if !exists('g:open_url_custom_keymap')
+    nnoremap <leader>u :call OpenUrlUnderCursor()<CR>
+    nnoremap <leader>b :call OpenBundleUnderCursor()<CR>
+endif
 
 
 let &cpo = s:save_cpo
