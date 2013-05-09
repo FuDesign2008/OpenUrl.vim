@@ -10,3 +10,6 @@ Open url under the cursor faster!
 
 ##Options
 1. `g:open_url_custom_keymap`. This option is used to config the key mappings. If you want to custom the key mappings, set the option to `1`. The default value is `0`
+
+##Next
+1. to highlight url
