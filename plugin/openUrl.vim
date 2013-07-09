@@ -48,6 +48,12 @@ function! OpenUrlUnderCursor()
     execute "normal BvEy"
     " \u0027 = '
     let url = matchstr(@0, '[a-z]*:\/\/[^ >,;"\u0027]*')
+    " ) can be contained in url, but can not be contained at the end of url
+    let index = matchend(url, ')')
+    if index != -1
+        let url = strpart(url, 0, index - 1)
+    endif
+
     if strlen(url)
         call s:OpenUrl(url)
     else
