@@ -60,7 +60,24 @@ function! OpenUrlUnderCursor()
     "
     "@see http://blog.mattheworiordan.com/post/13174566389/url-regular-expression-for-links-with-or-without-the
     "
-    let url = matchstr(@0, '[A-Za-z]{3,9}*:(\/{2,3})?[A-Za-z0-9\.\-;:&=\+\$,\w~%\/@\!]+')
+    let text = @0
+    " http://
+    " file:///
+    let url = matchstr(text, '[A-Za-z]\{3,9\}:\(\/\{2,3\}\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+    if !strlen(url)
+        "www.
+        let url = matchstr(text, 'www\.[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+        if strlen(url)
+            let url = 'http://' . url
+        endif
+    endif
+    " mailto:
+    if !strlen(url)
+        let url = matchstr(text, '\(mailto:\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+@[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+        if strlen(url) && !matchstr(text, 'mailto:', 0)
+            let url = 'mailto:' . url
+        endif
+    endif
 
     if strlen(url)
         call s:OpenUrl(url)
