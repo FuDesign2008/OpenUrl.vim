@@ -44,15 +44,23 @@ endfunction
 
 function! OpenUrlUnderCursor()
     "One line may have more than one url
-    "let url = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
     execute "normal BvEy"
-    " \u0027 = '
-    let url = matchstr(@0, '[a-z]*:\/\/[^ >,;"\u0027]*')
-    " ) can be contained in url, but can not be contained at the end of url
-    let index = matchend(url, ')')
-    if index != -1
-        let url = strpart(url, 0, index - 1)
-    endif
+    " uri specification
+    " @see http://tools.ietf.org/html/rfc3986#section-3.1
+    "
+    "        foo://example.com:8042/over/there?name=ferret#nose
+    "        \_/   \______________/\_________/ \_________/ \__/
+    "         |           |            |            |        |
+    "      scheme     authority       path        query   fragment
+    "         |   _____________________|__
+    "        / \ /                        \
+    "        urn:example:animal:ferret:nose
+    "
+    "
+    "
+    "@see http://blog.mattheworiordan.com/post/13174566389/url-regular-expression-for-links-with-or-without-the
+    "
+    let url = matchstr(@0, '[A-Za-z]{3,9}*:(\/{2,3})?[A-Za-z0-9\.\-;:&=\+\$,\w~%\/@\!]+')
 
     if strlen(url)
         call s:OpenUrl(url)
