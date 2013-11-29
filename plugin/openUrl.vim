@@ -41,6 +41,13 @@ function! s:OpenUrl(url)
     endif
 endfunction
 
+"@param {String} str
+"@param {String} start
+"@return {Boolean}
+function! s:InsensiveStartWith(str, start)
+    return stridx(tolower(a:str), tolower(a:start)) == 0
+endfunction
+
 
 function! OpenUrlUnderCursor()
     "One line may have more than one url
@@ -61,23 +68,30 @@ function! OpenUrlUnderCursor()
     "@see http://blog.mattheworiordan.com/post/13174566389/url-regular-expression-for-links-with-or-without-the
     "
     let text = @0
-    " http://
-    " file:///
-    let url = matchstr(text, '[A-Za-z]\{3,9\}:\(\/\{2,3\}\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
-    if !strlen(url)
-        "www.
-        let url = matchstr(text, 'www\.[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
-        if strlen(url)
-            let url = 'http://' . url
-        endif
-    endif
     " mailto:
+    let url = matchstr(text, '\(mailto:\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+@[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+    if s:InsensiveStartWith(url, 'mailto:')
+        "do nothing
+    elseif strlen(url)
+        let url = 'mailto:' . url
+    else
+        let url = ''
+    endif
     if !strlen(url)
-        let url = matchstr(text, '\(mailto:\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+@[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
-        if strlen(url) && !matchstr(text, 'mailto:', 0)
-            let url = 'mailto:' . url
+        " http://
+        " file:///
+        let url = matchstr(text, '[A-Za-z]\{3,9\}:\(\/\{2,3\}\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+        if !strlen(url)
+            "www.
+            let url = matchstr(text, 'www\.[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+            if strlen(url)
+                let url = 'http://' . url
+            endif
         endif
     endif
+    "echo text
+    "echo url
+    "return
 
     if strlen(url)
         call s:OpenUrl(url)
