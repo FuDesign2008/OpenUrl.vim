@@ -1,7 +1,10 @@
 OpenUrl.vim
 ===========
 
-Open url under the cursor faster!
+Open url under cursor!
+
+NOTE: You can also open the url under cursor with `gx`, executing `:help
+netrw-gx` to see more.
 
 
 ##Default Key Mappings
