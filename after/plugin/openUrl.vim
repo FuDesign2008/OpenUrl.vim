@@ -29,7 +29,8 @@ function! s:OpenUrl(url)
         elseif has('mac')
             let cmdStr = 'open -a Safari ' . urlStr
             let findStr = system('ls /Applications/ | grep -i google\ chrome')
-            if strlen(findStr) > 5
+            let findStrLocal = system('ls ~/Applications/ | grep -i google\ chrome')
+            if strlen(findStr) > 5 || strlen(findStrLocal) > 5
                 let cmdStr = 'open -a Google\ Chrome ' . urlStr
             endif
         elseif has('unix')
