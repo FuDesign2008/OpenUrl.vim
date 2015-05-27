@@ -1,7 +1,7 @@
 "
 " openUrl.vim
 "
-" avalable for win32, mac, unix/linux
+" available for windows, mac, unix/linux
 "
 " 1. Open the url under the cursor: <leader>u
 " 2. Open the github bundle under the cursor: <leader>b
