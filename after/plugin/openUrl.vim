@@ -10,7 +10,7 @@
 
 
 
-if &cp || exists("g:open_url")
+if &cp || exists('g:open_url')
     finish
 endif
 let g:open_url = 1
@@ -57,7 +57,7 @@ endfunction
 
 function! OpenUrlUnderCursor()
     "One line may have more than one url
-    execute "normal BvEy"
+    execute 'normal BvEy'
     " uri specification
     " @see http://tools.ietf.org/html/rfc3986#section-3.1
     "
