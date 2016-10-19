@@ -118,8 +118,8 @@ endfunction
 
 function! s:OpenJiraItemUnderCursor()
 
-    if !exists('g:jira_url_prefix')
-        echomsg 'g:jira_url_prefix does NOT exist, config it at .vimrc'
+    if !exists('g:open_jira_prefix')
+        echomsg 'g:open_jira_prefix does NOT exist, config it at .vimrc'
         return
     endif
 
@@ -150,7 +150,7 @@ function! s:OpenJiraItemUnderCursor()
         return
     endif
 
-    let prefix = g:jira_url_prefix
+    let prefix = g:open_jira_prefix
     if !matchstr(prefix, '/$')
         let prefix = prefix . '/'
     endif
