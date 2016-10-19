@@ -124,7 +124,8 @@ function! s:OpenJiraItemUnderCursor()
     endif
 
     let line = getline('.') . ''
-    let index = col('.')
+    "col('.') starts with 1
+    let index = col('.') - 1
     let reg = '\a\+-\d\+'
 
     let jiraItem = ''
@@ -135,10 +136,10 @@ function! s:OpenJiraItemUnderCursor()
 
     while matchStart != -1
 
-        if matchStart >= index && index <= matchEnd
+        if matchStart <= index  && index <= matchEnd
             let jiraItem = result[0]
             break
-        end
+        endif
 
         let startIndex = matchEnd
         let result = matchstrpos(line, reg, startIndex)
@@ -147,11 +148,12 @@ function! s:OpenJiraItemUnderCursor()
     endwhile
 
     if strlen(jiraItem) < 3
+        echomsg 'Failed to find jira item'
         return
     endif
 
     let prefix = g:jira_url_prefix
-    if !matchstr(prefix, '/$')
+    if match(prefix, '/$') == -1
         let prefix = prefix . '/'
     endif
 
@@ -165,9 +167,9 @@ command -nargs=0 OpenJira call s:OpenJiraItemUnderCursor()
 
 
 if !exists('g:open_url_custom_keymap')
-    nnoremap <leader>u OpenUrl<CR>
-    nnoremap <leader>b OpenBundle<CR>
-    nnoremap <leader>j OpenJira<CR>
+    nnoremap <leader>u :OpenUrl<CR>
+    nnoremap <leader>b :OpenBundle<CR>
+    nnoremap <leader>j :OpenJira<CR>
 endif
 
 
