@@ -55,7 +55,7 @@ function! s:InsensiveStartWith(str, start)
 endfunction
 
 
-function! OpenUrlUnderCursor()
+function! s:OpenUrlUnderCursor()
     "One line may have more than one url
     execute 'normal BvEy'
     " uri specification
@@ -106,7 +106,7 @@ function! OpenUrlUnderCursor()
     endif
 endfunction
 
-function! OpenBundleUnderCursor()
+function! s:OpenBundleUnderCursor()
     let bundle = expand('<cfile>')
     if strlen(bundle)
         call s:OpenUrl('https://github.com/' . bundle)
@@ -116,9 +116,58 @@ function! OpenBundleUnderCursor()
 endfunction
 
 
+function! s:OpenJiraItemUnderCursor()
+
+    if !exists('g:jira_url_prefix')
+        echomsg 'g:jira_url_prefix does NOT exist, config it at .vimrc'
+        return
+    endif
+
+    let line = getline('.') . ''
+    let index = col('.')
+    let reg = '\a\+-\d\+'
+
+    let jiraItem = ''
+    let startIndex = 0
+    let result = matchstrpos(line, reg, startIndex)
+    let matchStart = result[1]
+    let matchEnd = result[2]
+
+    while matchStart != -1
+
+        if matchStart >= index && index <= matchEnd
+            let jiraItem = result[0]
+            break
+        end
+
+        let startIndex = matchEnd
+        let result = matchstrpos(line, reg, startIndex)
+        let matchStart = result[1]
+        let matchEnd = result[2]
+    endwhile
+
+    if strlen(jiraItem) < 3
+        return
+    endif
+
+    let prefix = g:jira_url_prefix
+    if !matchstr(prefix, '/$')
+        let prefix = prefix . '/'
+    endif
+
+    let fullUrl = prefix . jiraItem
+    call s:OpenUrl(fullUrl)
+endfunction
+
+command -nargs=0 OpenUrl call s:OpenUrlUnderCursor()
+command -nargs=0 OpenBundle call s:OpenBundleUnderCursor()
+command -nargs=0 OpenJira call s:OpenJiraItemUnderCursor()
+
+
 if !exists('g:open_url_custom_keymap')
-    nnoremap <leader>u :call OpenUrlUnderCursor()<CR>
-    nnoremap <leader>b :call OpenBundleUnderCursor()<CR>
+    nnoremap <leader>u OpenUrl<CR>
+    nnoremap <leader>b OpenBundle<CR>
+    nnoremap <leader>j OpenJira<CR>
 endif
 
 
