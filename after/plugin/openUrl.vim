@@ -75,7 +75,7 @@ function! s:OpenUrlUnderCursor()
     "
     let text = @0
     " mailto:
-    let url = matchstr(text, '\(mailto:\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+@[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+    let url = matchstr(text, '\(mailto:\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\!?#_]\+@[A-Za-z0-9\.\-;:&=+\$,\w~%\!?#_]\+')
     if s:InsensiveStartWith(url, 'mailto:')
         "do nothing
     elseif strlen(url)
@@ -86,10 +86,10 @@ function! s:OpenUrlUnderCursor()
     if !strlen(url)
         " http://
         " file:///
-        let url = matchstr(text, '[A-Za-z]\{3,9\}:\(\/\{2,3\}\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+        let url = matchstr(text, '[A-Za-z]\{3,9\}:\(\/\{2,3\}\)\?[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_@]\+')
         if !strlen(url)
             "www.
-            let url = matchstr(text, 'www\.[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_]\+')
+            let url = matchstr(text, 'www\.[A-Za-z0-9\.\-;:&=+\$,\w~%\/\!?#_@]\+')
             if strlen(url)
                 let url = 'http://' . url
             endif
