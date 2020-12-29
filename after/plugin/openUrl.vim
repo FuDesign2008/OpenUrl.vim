@@ -35,7 +35,7 @@ function! s:OpenUrl(url)
             endif
         elseif has('unix')
             " unix/linux
-            let cmdStr = 'xdg-open ' . urlStr
+            let cmdStr = 'xdg-open ' . urlStr . ' &'
         else
             echomsg 'Url "' . urlStr . '" can NOT be opened!'
             return
